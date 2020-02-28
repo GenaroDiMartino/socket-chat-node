@@ -14,24 +14,21 @@ var usuario = {
 socket.on('connect', () => {
     console.log('Conectado al servidor');
 
-    socket.emit('entrarChat', usuario, (resp) => console.log('Usuarios conectados', resp));
+    socket.emit('entrarChat', usuario, (resp) => renderizarUsuarios(resp));
 });
 
 // escuchar
 socket.on('disconnect', () => console.log('Perdimos conexión con el servidor'));
 
 
-// Enviar información
-// socket.emit('crearMensaje', {
-//     usuario: 'Fernando',
-//     mensaje: 'Hola Mundo'
-// }, (resp) => console.log('respuesta server: ', resp));
-
 // Escuchar información
-socket.on('crearMensaje', (mensaje) => console.log('Servidor:', mensaje));
+socket.on('crearMensaje', (mensaje) => {
+    renderizarMensajes(mensaje, false);
+    scrollBottom();
+});
 
 // Escuchar cambios de usuarios
-socket.on('listaPersona', (personas) => console.log(personas));
+socket.on('listaPersona', (personas) => renderizarUsuarios(personas));
 
 //Mensaje privado
 socket.on('mensajePrivado', (mensaje) => console.log(mensaje));
